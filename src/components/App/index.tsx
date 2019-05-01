@@ -59,6 +59,14 @@ export default class App extends React.Component<{}, IState> {
       <div className='container'>
         <h1>Dispute flow example</h1>
 
+        <div className='description main-description'>
+          This example illustrates usage of Monetha's decentralized dispute management SDK (claims-sdk).<br/><br />
+
+          Requirements to proceed with example:<br/>
+          - Metamask chrome extension must be installed<br/>
+          - You have to have two Ropsten wallets in Metamask with at least 150 MTH tokens and some ETH for fees in each
+        </div>
+
         {this.renderCurrentDispute()}
 
         <h2>Requester</h2>
@@ -165,6 +173,21 @@ export default class App extends React.Component<{}, IState> {
         <Panel
           heading='Create dispute'
         >
+          <div className='description'>
+            To create a dispute, please fill in the dispute form below and click "Open dispute".<br/>
+            Opening a dispute will transfer (stake) selected amount of MTH tokens from your wallet in Metamask to claims
+            handler contract.<br/><br/>
+
+            A minimum amount to stake is 150 MTH.<br/><br/>
+
+            Deal ID, Requester ID and Respondent ID fields can have any values which allows tracking claimed deals and dispute
+            participants in third party systems. For example, when disputes are used in e-shops, "Deal ID" could be shop order's ID and
+            "Requester ID" / "Respondent ID" could be order's buyer and seller IDs<br/><br/>
+
+            In order for transaction to succeed, make sure there is enough allowance in Monetha token contract
+            to transfer selected amount of tokens from your wallet to claims handler contract. You can check and set allowance using the box below.
+          </div>
+
           {this.renderMTHAllowanceForm()}
           {this.renderClaimCreateForm()}
         </Panel>
@@ -222,6 +245,15 @@ export default class App extends React.Component<{}, IState> {
           isDisabled={isPanelDisabled}
           right
         >
+          <div className='description'>
+            A dispute can be accepted when it is in "AwaitingAcceptance" state.<br /><br />
+
+            To accept a dispute - please select a different wallet in metamask (for respondent) and click "Accept dispute". Accepting a dispute
+            will transfer (stake) the same amount of MTH tokens from selected wallet to claims handler contract.<br /><br />
+
+            Again, as with dispute creation, make sure there is enough allowance to transfer tokens. Use the box below to ensure that.
+          </div>
+
           {this.renderMTHAllowanceForm()}
 
           <button
@@ -270,6 +302,15 @@ export default class App extends React.Component<{}, IState> {
           isDisabled={isDisabled}
           right
         >
+          <div className='description'>
+            A dispute can be resolved when it is in "AwaitingResolution" state.<br /><br />
+
+            To resolve a dispute - please enter the resolution note, make sure that respondent's wallet is still
+            selected in Metamask and click "Resolve dispute".<br /><br />
+
+            After resolution, respondent's staked MTH tokens will be transferred back to respondent's wallet.
+          </div>
+
           <ClaimResolveForm
             onSubmit={this.onResolveClaim}
           />
@@ -324,6 +365,19 @@ export default class App extends React.Component<{}, IState> {
           heading='Close dispute'
           isDisabled={isDisabled}
         >
+          <div className='description'>
+            A dispute can be closed when it is in: <br/>
+            - "AwaitingConfirmation" state<br/>
+            - "AwaitingAcceptance" state and 72 hours has passed since opening<br/>
+            - "AwaitingResolution" state and 72 hours has passed since acceptance<br/><br/>
+
+            To close a dispute - please select back the requester's wallet in Metamask and click "Close dispute".<br /><br />
+
+            After closing, requester's staked MTH tokens will be transferred back to requester's wallet.<br />
+            In case when dispute is in "AwaitingResolution" state and 72 hours has passed, closing will cause respondent's staked MTH tokens
+            to be transferred to requester's wallet as well.
+          </div>
+
           <button
             type='button'
             onClick={this.onCloseClaim}
