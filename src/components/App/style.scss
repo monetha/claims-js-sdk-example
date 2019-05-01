@@ -1,0 +1,15 @@
+.current-dispute {
+  display: flex;
+  justify-content: center;
+
+  h3 {
+    text-align: center;
+  }
+}
+
+.allowance-form-container {
+  > div {
+    display: inline-block;
+    margin-bottom: 30px;
+  }
+}

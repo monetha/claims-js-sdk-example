@@ -1,0 +1,28 @@
+.panel {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  position: relative;
+
+  &.right {
+    text-align: right;
+  }
+
+  &.disabled {
+    color: #999;
+    background-color: #f8f8f8;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      border-radius: 10px;
+      background-color: rgba(#f8f8f8,0.5);
+    }
+  }
+}
