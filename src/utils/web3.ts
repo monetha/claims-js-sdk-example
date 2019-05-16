@@ -3,7 +3,7 @@ import { ethNetworkUrl } from 'src/constants/constants';
 import { IRawTX } from './metamask';
 import { ITransactionReceipt } from 'claims-sdk/dist/models/tx';
 import Web3 from 'web3';
-import {TransactionObject} from "claims-sdk/src/contracts/types";
+import {TransactionObject} from "claims-sdk/dist/contracts/types";
 
 export enum BlockStatuses {
   Failed = '0x0',
