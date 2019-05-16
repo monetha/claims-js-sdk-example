@@ -128,7 +128,7 @@ export default class App extends React.Component<{}, IState> {
     this.runBlockchainOperation(async (walletAddress) => {
       const tx = this.claimManager.allowTx(new BigNumber(tokens));
 
-      await this.sendAndWaitTx(walletAddress, claimsHandlerContractAddress, tx);
+      await this.sendAndWaitTx(walletAddress, monethaTokenContractAddress, tx);
 
       this.refreshCurrentAllowance();
     });
@@ -138,7 +138,7 @@ export default class App extends React.Component<{}, IState> {
     this.runBlockchainOperation(async (walletAddress) => {
       const tx = this.claimManager.clearAllowanceTx();
 
-      await this.sendAndWaitTx(walletAddress, claimsHandlerContractAddress, tx);
+      await this.sendAndWaitTx(walletAddress, monethaTokenContractAddress, tx);
 
       this.refreshCurrentAllowance();
     });
