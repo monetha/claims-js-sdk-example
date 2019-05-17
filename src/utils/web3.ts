@@ -19,10 +19,6 @@ export function getWeb3(): Web3 {
 
   web3 = new Web3(new Web3.providers.HttpProvider(ethNetworkUrl));
 
-  // if (!web3.isConnected()) {
-  //   throw new Error('Ethereum node address is incorrect');
-  // }
-
   return web3;
 }
 
