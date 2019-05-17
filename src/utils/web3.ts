@@ -75,7 +75,7 @@ export const getTransactionReceipt = (txHash: string) => {
 export const prepareRawTX = async <T>(fromAddress: string, toAddress: string, tx: TransactionObject<T>): Promise<IRawTX> => {
   const nonce = await getNonceFromBlockChain(fromAddress);
   const gasPrice = await getGasPriceFromBlockChain();
-  const gasLimit = await tx.estimateGas();
+  const gasLimit = await getEstimatedGas(tx.encodeABI(), fromAddress, toAddress);
 
   const web3 = getWeb3();
   return {
@@ -88,6 +88,12 @@ export const prepareRawTX = async <T>(fromAddress: string, toAddress: string, tx
     data: tx.encodeABI(),
   };
 };
+
+export const getEstimatedGas = (data: any, from: string, to: string): Promise<number> => {
+  const web3 = getWeb3();
+
+  return web3.eth.estimateGas({ data, from, to });
+}
 
 export const getGasPriceFromBlockChain = (): Promise<string> => {
   const web3 = getWeb3();
