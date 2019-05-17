@@ -80,7 +80,7 @@ export const prepareRawTX = async <T>(fromAddress: string, toAddress: string, tx
     from: fromAddress,
     to: toAddress,
     nonce: web3.utils.toHex(nonce),
-    gasPrice: web3.utils.toHex(gasPrice),
+    gasPrice,
     gasLimit,
     value: 0,
     data: tx.encodeABI(),
