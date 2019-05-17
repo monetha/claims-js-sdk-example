@@ -39,7 +39,7 @@
   "dependencies": {
     "babel-polyfill": "6.26.0",
     "bignumber.js": "^8.1.1",
-    "claims-sdk": "git+https://github.com/monetha/claims-js-sdk.git",
+    "claims-sdk": "git+https://github.com/monetha/claims-js-sdk.git#ae409a465e87535339d0c35831c4c437e9dbbde3",
     "minimist": "1.2.0",
     "moment": "^2.24.0",
     "react": "16.8.6",
