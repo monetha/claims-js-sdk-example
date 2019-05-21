@@ -15,6 +15,7 @@ import { Loader } from '../Loader';
 import { Panel } from '../Panel';
 import { SidedContainer } from '../SidedContainer';
 import './style.scss';
+import { ITransactionObject } from 'claims-sdk';
 
 // #region -------------- Interfaces -------------------------------------------------------------------
 
@@ -128,7 +129,7 @@ export default class App extends React.Component<{}, IState> {
     this.runBlockchainOperation(async (walletAddress) => {
       const tx = this.claimManager.allowTx(new BigNumber(tokens));
 
-      await this.sendAndWaitTx(walletAddress, tx.contractAddress, tx.getData());
+      await this.sendAndWaitTx<boolean>(walletAddress, tx.contractAddress, tx);
 
       this.refreshCurrentAllowance();
     });
@@ -138,7 +139,7 @@ export default class App extends React.Component<{}, IState> {
     this.runBlockchainOperation(async (walletAddress) => {
       const tx = this.claimManager.clearAllowanceTx();
 
-      await this.sendAndWaitTx(walletAddress, tx.contractAddress, tx.getData());
+      await this.sendAndWaitTx<boolean>(walletAddress, tx.contractAddress, tx);
 
       this.refreshCurrentAllowance();
     });
@@ -212,7 +213,7 @@ export default class App extends React.Component<{}, IState> {
     this.runBlockchainOperation(async (walletAddress) => {
       const tx = this.claimManager.createTx(claim);
 
-      const receipt = await this.sendAndWaitTx(walletAddress, tx.contractAddress, tx.getData());
+      const receipt = await this.sendAndWaitTx<void>(walletAddress, tx.contractAddress, tx);
 
       // This helper allows us extracting claim ID from transaction receipt
       const claimId = getClaimIdFromCreateTXReceipt(receipt);
@@ -278,7 +279,7 @@ export default class App extends React.Component<{}, IState> {
 
       const tx = this.claimManager.acceptTx(claim.id);
 
-      await this.sendAndWaitTx(walletAddress, tx.contractAddress, tx.getData());
+      await this.sendAndWaitTx<void>(walletAddress, tx.contractAddress, tx);
 
       await this.loadClaim(claim.id);
 
@@ -329,7 +330,7 @@ export default class App extends React.Component<{}, IState> {
 
       const tx = this.claimManager.resolveTx(claim.id, resolution);
 
-      await this.sendAndWaitTx(walletAddress, tx.contractAddress, tx.getData());
+      await this.sendAndWaitTx<void>(walletAddress, tx.contractAddress, tx);
 
       await this.loadClaim(claim.id);
     });
@@ -399,7 +400,7 @@ export default class App extends React.Component<{}, IState> {
 
       const tx = this.claimManager.closeTx(claim.id);
 
-      await this.sendAndWaitTx(walletAddress, tx.contractAddress, tx.getData());
+      await this.sendAndWaitTx<void>(walletAddress, tx.contractAddress, tx);
 
       await this.loadClaim(claim.id);
     });
@@ -454,11 +455,10 @@ export default class App extends React.Component<{}, IState> {
    * Helper which sends transaction using metamask and waits for it to finish. It also handles gas and nonce estimations.
    * @param walletAddress - wallet address which is used for sending transaction
    * @param contractAddress - contract address on which operation will run
-   * @param txData - transaction data
+   * @param tx - transaction
    */
-  private async sendAndWaitTx(walletAddress: string, contractAddress: string, txData: string) {
-    const rawTx = await prepareRawTX(walletAddress, contractAddress, txData);
-
+  private async sendAndWaitTx <T>(walletAddress: string, contractAddress: string, tx: ITransactionObject<T>) {
+    const rawTx = await prepareRawTX(walletAddress, contractAddress, tx);
     const txHash = await sendTransaction(rawTx);
     return waitForTxToFinish(txHash);
   }

@@ -2,8 +2,8 @@ import { convertCallbackToPromise } from './promise';
 import { ethNetworkUrl } from 'src/constants/constants';
 import { IRawTX } from './metamask';
 import { ITransactionReceipt } from 'claims-sdk/dist/models/tx';
-
-const Web3 = require('web3');
+import Web3 from 'web3';
+import {ITransactionObject} from "claims-sdk";
 
 export enum BlockStatuses {
   Failed = '0x0',
@@ -12,16 +12,12 @@ export enum BlockStatuses {
 
 let web3 = null;
 
-export function getWeb3() {
+export function getWeb3(): Web3 {
   if (web3) {
     return web3;
   }
 
   web3 = new Web3(new Web3.providers.HttpProvider(ethNetworkUrl));
-
-  if (!web3.isConnected()) {
-    throw new Error('Ethereum node address is incorrect');
-  }
 
   return web3;
 }
@@ -72,37 +68,33 @@ export const getTransactionReceipt = (txHash: string) => {
  * Prepare transaction metadata for contract method exection transaction submission.
  * This includes gas limit and price estimations and nonce retrieval
  */
-export const prepareRawTX = async (fromAddress: string, toAddress: string, data: string): Promise<IRawTX> => {
+export const prepareRawTX = async <T>(fromAddress: string, toAddress: string, tx: ITransactionObject<T>): Promise<IRawTX> => {
   const nonce = await getNonceFromBlockChain(fromAddress);
   const gasPrice = await getGasPriceFromBlockChain();
-  const gasLimit = await getEstimatedGas(data, fromAddress, toAddress);
+  const gasLimit = await tx.estimateGas({
+    from: fromAddress,
+  } as any);
 
+  const web3 = getWeb3();
   return {
     from: fromAddress,
     to: toAddress,
-    nonce,
+    nonce: web3.utils.toHex(nonce),
     gasPrice,
     gasLimit,
     value: 0,
-    data,
+    data: tx.encodeABI(),
   };
-}
+};
 
-export const getEstimatedGas = async (data: any, from: string, to: string): Promise<number> => {
+export const getGasPriceFromBlockChain = (): Promise<string> => {
   const web3 = getWeb3();
 
-  return web3.eth.estimateGas({ data, from, to });
-}
+  return web3.eth.getGasPrice();
+};
 
-export const getGasPriceFromBlockChain = (): string => {
+export const getNonceFromBlockChain = (fromAddress: string): Promise<number> => {
   const web3 = getWeb3();
 
-  return web3.toHex(web3.eth.gasPrice);
-}
-
-export const getNonceFromBlockChain = (fromAddress: string): string => {
-  const web3 = getWeb3();
-
-  const count = web3.eth.getTransactionCount(fromAddress);
-  return web3.toHex(count);
+  return web3.eth.getTransactionCount(fromAddress);
 }
