@@ -1,6 +1,6 @@
 {
   "name": "claims-js-sdk-example",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Usage example of claims-js-sdk",
   "engines": {
     "npm": ">=3",
