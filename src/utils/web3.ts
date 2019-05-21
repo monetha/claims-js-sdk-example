@@ -3,7 +3,7 @@ import { ethNetworkUrl } from 'src/constants/constants';
 import { IRawTX } from './metamask';
 import { ITransactionReceipt } from 'claims-sdk/dist/models/tx';
 import Web3 from 'web3';
-import {TransactionObject} from "claims-sdk/dist/contracts/types";
+import {ITransactionObject} from "claims-sdk";
 
 export enum BlockStatuses {
   Failed = '0x0',
@@ -68,7 +68,7 @@ export const getTransactionReceipt = (txHash: string) => {
  * Prepare transaction metadata for contract method exection transaction submission.
  * This includes gas limit and price estimations and nonce retrieval
  */
-export const prepareRawTX = async <T>(fromAddress: string, toAddress: string, tx: TransactionObject<T>): Promise<IRawTX> => {
+export const prepareRawTX = async <T>(fromAddress: string, toAddress: string, tx: ITransactionObject<T>): Promise<IRawTX> => {
   const nonce = await getNonceFromBlockChain(fromAddress);
   const gasPrice = await getGasPriceFromBlockChain();
   const gasLimit = await tx.estimateGas({
