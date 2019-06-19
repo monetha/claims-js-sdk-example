@@ -39,7 +39,7 @@
   "dependencies": {
     "babel-polyfill": "6.26.0",
     "bignumber.js": "^8.1.1",
-    "claims-sdk": "git+https://github.com/monetha/claims-js-sdk.git",
+    "claims-sdk": "git+https://github.com/monetha/claims-js-sdk.git#2.0.2",
     "minimist": "1.2.0",
     "moment": "^2.24.0",
     "react": "16.8.6",
@@ -82,7 +82,7 @@
     "node-sass": "4.12.0",
     "null-loader": "1.0.0",
     "plop": "2.3.0",
-    "react-svg-loader": "^2.1.0",
+    "react-svg-loader": "^3.0.3",
     "rimraf": "2.6.3",
     "sass-loader": "7.1.0",
     "shelljs": "0.8.3",
