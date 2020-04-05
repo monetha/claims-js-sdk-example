@@ -40,7 +40,7 @@
     "babel-polyfill": "6.26.0",
     "bignumber.js": "^8.1.1",
     "claims-sdk": "git+https://github.com/monetha/claims-js-sdk.git#2.0.2",
-    "minimist": "1.2.0",
+    "minimist": "1.2.3",
     "moment": "^2.24.0",
     "react": "16.8.6",
     "react-dom": "16.8.6",
